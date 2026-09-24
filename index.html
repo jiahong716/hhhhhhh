@@ -1,103 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="簡潔好玩的線上擲骰子工具">
-  <title>骰來骰去 | 擲骰子</title>
+  <meta name="theme-color" content="#111a22">
+  <title>FRONTIER RUN // BT-INSPIRED LOADOUT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="app-shell">
+  <main class="shell">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="骰來骰去首頁">
-        <span class="brand-mark" aria-hidden="true">✦</span>
-        <span>骰來骰去</span>
-      </a>
-      <span class="topbar-note">ROLL YOUR LUCK</span>
+      <div class="brand" aria-label="Frontier Run">
+        <span class="brand-mark" aria-hidden="true">NR</span>
+        <div>
+          <p class="eyebrow">FRONTIER COMMAND / SIMULATION</p>
+          <h1>FRONTIER RUN <span>// TITAN LINK</span></h1>
+        </div>
+      </div>
+      <div class="status-pill"><span class="status-dot"></span><span id="statusText">SYSTEM READY</span></div>
     </header>
 
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-copy">
-        <p class="eyebrow">今日手氣如何？</p>
-        <h1 id="page-title">讓命運<br><em>擲出答案。</em></h1>
-        <p class="hero-text">選好骰子的數量與面數，按下按鈕，交給一點隨機的魔法。</p>
+    <section class="hud" aria-label="遊戲資訊">
+      <div class="metric">
+        <span class="metric-label">DISTANCE</span>
+        <strong id="score">000000</strong>
       </div>
-      <div class="hero-die" aria-hidden="true"><span id="hero-die-dot">5</span></div>
+      <div class="metric best-metric">
+        <span class="metric-label">BEST RUN</span>
+        <strong id="highScore">000000</strong>
+      </div>
+      <div class="metric kill-metric">
+        <span class="metric-label">KILLS / BEST</span>
+        <strong><span id="kills">000</span><small>/ <span id="highKills">000</span></small></strong>
+      </div>
+      <div class="metric level-metric">
+        <span class="metric-label">THREAT LEVEL</span>
+        <strong id="level">01</strong>
+      </div>
     </section>
 
-    <section class="game-layout" aria-label="擲骰工具">
-      <div class="control-panel panel">
-        <div class="panel-heading">
-          <span class="panel-kicker">01 / 設定</span>
-          <h2>你的骰子</h2>
-        </div>
-
-        <div class="field-group">
-          <label for="dice-count">骰子數量</label>
-          <div class="stepper">
-            <button class="stepper-button" id="decrease-dice" type="button" aria-label="減少骰子數量">−</button>
-            <output id="dice-count-output" for="dice-count">2</output>
-            <button class="stepper-button" id="increase-dice" type="button" aria-label="增加骰子數量">＋</button>
-          </div>
-          <input id="dice-count" type="range" min="1" max="6" value="2" aria-label="骰子數量">
-        </div>
-
-        <div class="field-group">
-          <label for="dice-sides">骰子面數</label>
-          <select id="dice-sides">
-            <option value="4">D4 · 4 面</option>
-            <option value="6" selected>D6 · 6 面</option>
-            <option value="8">D8 · 8 面</option>
-            <option value="10">D10 · 10 面</option>
-            <option value="12">D12 · 12 面</option>
-            <option value="20">D20 · 20 面</option>
-            <option value="100">D100 · 100 面</option>
-          </select>
-        </div>
-
-        <button class="roll-button" id="roll-button" type="button">
-          <span>開始擲骰</span>
-          <span class="button-arrow" aria-hidden="true">↗</span>
-        </button>
-        <p class="keyboard-hint">按下 <kbd>Space</kbd> 也可以擲骰</p>
-      </div>
-
-      <div class="result-panel panel">
-        <div class="result-heading">
-          <div>
-            <span class="panel-kicker">02 / 結果</span>
-            <h2>這次擲出了</h2>
-          </div>
-          <div class="total-wrap">
-            <span>總和</span>
-            <strong id="total-value">—</strong>
-          </div>
-        </div>
-        <div class="dice-results" id="dice-results" aria-live="polite" aria-label="骰子結果">
-          <div class="empty-state">準備好就按下擲骰吧 <span>✦</span></div>
+    <section class="game-frame" aria-label="FRONTIER RUN 遊戲區域">
+      <div class="scanline" aria-hidden="true"></div>
+      <canvas id="gameCanvas" width="1200" height="520" aria-label="FRONTIER RUN 遊戲畫面"></canvas>
+      <div class="game-overlay" id="gameOverlay">
+        <div class="overlay-card">
+          <span class="overlay-kicker" id="overlayKicker">RUN PROTOCOL</span>
+          <h2 id="overlayTitle">READY TO RUN?</h2>
+          <p id="overlayMessage">按下 Space 或 W 跳躍，使用 X 鎖定並摧毀前方敵人。</p>
+          <button class="primary-button" id="startButton" type="button"><span>START RUN</span><b>↗</b></button>
         </div>
       </div>
     </section>
 
-    <section class="history-section" aria-labelledby="history-title">
-      <div class="section-heading">
-        <div>
-          <span class="panel-kicker">03 / 軌跡</span>
-          <h2 id="history-title">最近紀錄</h2>
-        </div>
-        <button class="clear-button" id="clear-history" type="button">清除紀錄</button>
-      </div>
-      <div class="history-list" id="history-list">
-        <p class="history-empty">每次擲骰的足跡都會出現在這裡。</p>
-      </div>
-    </section>
-
-    <footer>小小的隨機，大大的樂趣。 · <span id="roll-count">0</span> 次擲骰</footer>
+    <footer class="controls">
+      <div class="control-item"><kbd>SPACE</kbd><span>JUMP</span></div>
+      <div class="control-item"><kbd>W</kbd><span>JUMP</span></div>
+      <div class="control-item"><kbd>X</kbd><span>FIRE</span></div>
+      <div class="control-item"><kbd>P</kbd><span>PAUSE</span></div>
+      <div class="control-item"><kbd>R</kbd><span>RESTART</span></div>
+      <div class="footer-note"><span class="signal-bars"><i></i><i></i><i></i><i></i></span> CONNECTION STABLE</div>
+    </footer>
   </main>
+  <script src="script.js"></script>
 </body>
 </html>
